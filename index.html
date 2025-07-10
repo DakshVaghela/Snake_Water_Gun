@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snake Water Gun Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <h1>🐍💧🔫 Snake, Water, Gun</h1>
+        <p class="tagline">Can you beat the computer?</p>
+
+        <div class="buttons">
+            <button onclick="play('snake')">🐍 Snake</button>
+            <button onclick="play('water')">💧 Water</button>
+            <button onclick="play('gun')">🔫 Gun</button>
+        </div>
+
+        <div class="result-card" id="result">
+            <p>Choose an option to start the game!</p>
+        </div>
+    </div>
+
+    <footer>Made with ❤️ using Flask & HTML/CSS</footer>
+
+    <script>
+        function play(choice) {
+            fetch('/play', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ choice: choice })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resDiv = document.getElementById('result');
+                resDiv.innerHTML = `
+                    <p>You chose: <strong>${data.you}</strong></p>
+                    <p>Computer chose: <strong>${data.computer}</strong></p>
+                    <p class="final-result">${data.result}</p>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
